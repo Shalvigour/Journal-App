@@ -1,9 +1,11 @@
 package net.engineeringdigest.journalApp.controller;
 
+import net.engineeringdigest.journalApp.api.response.WeatherResponse;
 import net.engineeringdigest.journalApp.service.UserService;
 import net.engineeringdigest.journalApp.entity.User;
 import java.util.*;
 
+import net.engineeringdigest.journalApp.service.WeatherService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private WeatherService weatherService;
+
 //    @GetMapping
 //    public ResponseEntity<List<User>> getAll(){
 //        try{
@@ -30,6 +35,11 @@ public class UserController {
 
     @GetMapping("/username/{nusername}")
     public ResponseEntity<User> findById(@PathVariable String nusername){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String newusername = authentication.getName();
+        if(!newusername.equals(nusername)){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         Optional<User> check = userService.findByUserName(nusername);
         if(check.isPresent()){
             return new ResponseEntity<>(check.get(),HttpStatus.OK);
@@ -41,7 +51,7 @@ public class UserController {
 
 
     @PutMapping
-    public ResponseEntity<?> updateUser(@RequestBody User user){
+    public ResponseEntity<User> updateUser(@RequestBody User user){
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String nusername = authentication.getName();
@@ -68,6 +78,12 @@ public class UserController {
         }catch(Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/greet")
+    public ResponseEntity<String> greeting(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return new ResponseEntity<>("Hello " + authentication.getName()+" weather feels like "+weatherService.getWeather("Mumbai").getCurrent().getFeelslike(),HttpStatus.OK);
     }
 
 
