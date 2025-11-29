@@ -1,9 +1,8 @@
 package net.engineeringdigest.journalApp.entity;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.bson.types.ObjectId;
-import lombok.NonNull;
+
 import java.util.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -13,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "users")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     private ObjectId id;
@@ -30,4 +31,11 @@ public class User {
 
     @Builder.Default
     private List<String> roles=new ArrayList<>();
+
+
+
+    //jo users humko unhi mail id denge aur sentiment analysis ko true rakhenge toh usko sentiment analysis
+    // enable kr denge aur unke pure week mein likhe huye journals ko dekh kr unka sentiment analysis karenge.
+    private String email;
+    private boolean sentimentAnalysis;
 }

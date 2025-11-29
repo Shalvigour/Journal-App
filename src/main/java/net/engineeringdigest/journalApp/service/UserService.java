@@ -1,5 +1,6 @@
 package net.engineeringdigest.journalApp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import net.engineeringdigest.journalApp.entity.JournalEntry;
 import net.engineeringdigest.journalApp.repository.UserRepository;
 import net.engineeringdigest.journalApp.entity.User;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -45,6 +47,7 @@ public class UserService {
             userRepository.save(user);
             return true;
         }catch(Exception e){
+            log.error("unable to save admin entry");
             return false;
         }
     }

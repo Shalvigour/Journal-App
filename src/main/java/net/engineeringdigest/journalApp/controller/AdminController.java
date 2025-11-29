@@ -1,5 +1,6 @@
 package net.engineeringdigest.journalApp.controller;
 
+import net.engineeringdigest.journalApp.cache.AppCache;
 import net.engineeringdigest.journalApp.service.UserService;
 import net.engineeringdigest.journalApp.entity.User;
 
@@ -13,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+
+    @Autowired
+    private AppCache appCache;
+
 
     @Autowired
     private UserService userService;
@@ -33,6 +38,9 @@ public class AdminController {
         userService.newAdminSaveEntry(user);
     }
 
-
+    @GetMapping("/clear-app-cache")
+    public void clearAppCache(){
+        appCache.init();
+    }
 
 }
