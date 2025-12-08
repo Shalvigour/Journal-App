@@ -24,6 +24,7 @@ public class UserController {
     @Autowired
     private WeatherService weatherService;
 
+
 //    @GetMapping
 //    public ResponseEntity<List<User>> getAll(){
 //        try{
@@ -82,6 +83,7 @@ public class UserController {
 
     @GetMapping("/greet")
     public ResponseEntity<String> greeting(){
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new ResponseEntity<>("Hello " + authentication.getName()+" weather feels like "+weatherService.getWeather("Mumbai").getCurrent().getFeelslike(),HttpStatus.OK);
     }
